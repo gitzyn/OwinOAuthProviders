@@ -280,6 +280,14 @@ namespace Owin.Security.Providers.Salesforce
                     ProductionHost + endpointPath;
             }
 
+            // if AuthenticationProperties for this session specifies an environment property
+            // it should take precedence over the value in AuthenticationOptions
+            string authorizationEndpointProperty = null;
+            if (properties.Dictionary.TryGetValue(Constants.AuthorizationEndpointProperty, out authorizationEndpointProperty))
+            {
+                endpoint = authorizationEndpointProperty;
+            }
+
             return endpoint;
         }
 
@@ -299,6 +307,14 @@ namespace Owin.Security.Providers.Salesforce
                     environmentProperty == Constants.SandboxEnvironment ?
                     SandboxHost + endpointPath :
                     ProductionHost + endpointPath;
+            }
+
+            // if AuthenticationProperties for this session specifies an environment property
+            // it should take precedence over the value in AuthenticationOptions
+            string tokenEndpointProperty = null;
+            if (properties.Dictionary.TryGetValue(Constants.TokenEndpointProperty, out tokenEndpointProperty))
+            {
+                endpoint = tokenEndpointProperty;
             }
 
             return endpoint;
